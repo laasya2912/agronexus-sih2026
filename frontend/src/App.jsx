@@ -13,7 +13,7 @@ const Badge=({s})=><span className={'px-2 py-0.5 rounded-full text-xs font-semib
 export default function App(){
  const [tok,setTok]=useState(localStorage.getItem('t')),[user,setUser]=useState(null),[lang,setLang]=useState('English'),[tab,setTab]=useState('home'),[auth,setAuth]=useState(null),[msg,setMsg]=useState('');
  const t=T[lang];
- const api=useCallback(async(p,o={})=>{const r=await fetch('/api'+p,{...o,headers:{'Content-Type':'application/json',...(tok?{Authorization:'Bearer '+tok}:{})},body:o.body?JSON.stringify(o.body):undefined}).catch(()=>{throw new Error('Server unreachable. Is the backend running on port 8000?')});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(typeof d.detail==='string'?d.detail:'Please check the form inputs');return d},[tok]);
+ const api=useCallback(async(p,o={})=>{const r=await fetch((import.meta.env.VITE_API_URL || 'http://localhost:8000')+p,{...o,headers:{'Content-Type':'application/json',...(tok?{Authorization:'Bearer '+tok}:{})},body:o.body?JSON.stringify(o.body):undefined}).catch(()=>{throw new Error('Server unreachable. Is the backend running on port 8000?')});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(typeof d.detail==='string'?d.detail:'Please check the form inputs');return d},[tok]);
  useEffect(()=>{if(tok)api('/me').then(setUser).catch(()=>{localStorage.removeItem('t');setTok(null)})},[tok]);
  const enter=d=>{localStorage.setItem('t',d.token);setTok(d.token);setUser(d.user);setAuth(null);setTab('home')};
  const out=()=>{localStorage.removeItem('t');setTok(null);setUser(null)};
@@ -121,3 +121,4 @@ function Admin({api,t,user}){
   <div className="card"><b>API health (simulated departments)</b>{hub?.connectors.map(c=><div key={c.dept} className="text-sm flex justify-between border-b py-1"><span>{c.dept}</span><span>{c.status} · {c.calls} calls · {c.fail_rate}% fail</span></div>)}</div>
   <div className="card"><b>Audit log</b>{o?.audit.map((a,i)=><div key={i} className="text-xs font-mono">{a.ts} {a.actor}: {a.action}</div>)}</div></div>;
 }
+
