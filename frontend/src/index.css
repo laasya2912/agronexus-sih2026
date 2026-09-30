@@ -1,0 +1,6 @@
+@tailwind base;@tailwind components;@tailwind utilities;
+body{@apply bg-leaf-50 text-slate-800 antialiased}
+.btn{@apply px-4 py-2 rounded-lg bg-leaf-600 text-white font-medium hover:bg-leaf-700 disabled:opacity-50}
+.btn2{@apply px-4 py-2 rounded-lg border border-leaf-600 text-leaf-700 font-medium hover:bg-white}
+.card{@apply bg-white rounded-xl shadow-sm border border-green-100 p-4}
+.inp{@apply w-full border rounded-lg px-3 py-2 bg-white}
